@@ -1,0 +1,48 @@
+.navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, var(--black-color), transparent);
+
+  z-index: 100;
+  padding: 2rem 0;
+}
+
+.navigation > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navigation p {
+  font-family: var(--font-humane);
+  text-transform: uppercase;
+  font-size: 4rem;
+}
+
+.navigation ul {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+}
+
+.navigation ul li {
+  list-style-type: none;
+  font-size: 1.6rem;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+.navigation svg {
+  position: absolute;
+  left: -0;
+  right: 0;
+  top: 50%;
+  height: 15rem;
+  transform: translate(-15%, -49%);
+  width: 140%;
+  z-index: -1;
+}

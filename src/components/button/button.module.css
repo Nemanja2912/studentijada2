@@ -1,0 +1,11 @@
+.button {
+  background-color: var(--brand-color);
+
+  font-size: 1.6rem;
+  padding: 1.5rem 2.5rem;
+  line-height: 100%;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-align: center;
+}

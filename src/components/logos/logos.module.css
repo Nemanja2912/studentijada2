@@ -1,0 +1,50 @@
+.section {
+  background-color: var(--black-color);
+  position: relative;
+  z-index: 10;
+
+  padding-bottom: 10rem;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.logos {
+  display: flex;
+  overflow: hidden;
+  background-color: var(--green-color);
+  padding: 2rem 0;
+  position: relative;
+  transform: scale(1.2);
+}
+
+.logos:nth-child(2) {
+  background-color: var(--white-color);
+  transform: rotate(-5deg) translate(10%, -6rem) scale(1.2);
+  transform-origin: right;
+}
+
+.logos img {
+  height: 6rem;
+}
+
+.logos img:nth-child(4),
+.logos img:nth-child(10) {
+  filter: grayscale(100%);
+}
+
+.line {
+  padding: 0 5.2rem;
+
+  display: flex;
+  align-items: center;
+  gap: 15rem;
+  transform: translateX(-100%);
+}
+
+@media (max-width: 650px) {
+  .line {
+    gap: 7.5rem;
+  }
+}

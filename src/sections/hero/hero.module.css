@@ -1,0 +1,76 @@
+.section {
+  height: 150vh;
+  position: relative;
+  z-index: 5;
+}
+
+.video {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
+
+.section .video video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.background {
+  background-color: var(--black-color);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  opacity: 0.8;
+
+  position: absolute;
+}
+
+.section .content {
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 5rem;
+  position: sticky;
+  top: 0;
+}
+
+.section h1 {
+  font-family: var(--font-humane);
+  font-weight: 700;
+  font-size: 18rem;
+  line-height: 80%;
+  text-transform: uppercase;
+
+  transform-origin: bottom left;
+}
+
+.section h1 span {
+  color: var(--green-color);
+}
+
+.titleLine {
+  overflow: hidden;
+}
+
+.titleLine p {
+  padding-top: 0.5rem;
+  transform: translateY(110%);
+  opacity: 0;
+}
+
+.titleLine:nth-child(2) p {
+  animation-delay: 0.25s;
+}
+
+.titleLine:nth-child(3) p {
+  animation-delay: 0.5s;
+}
+
+.boxWrapper {
+  transform-origin: bottom right;
+}
