@@ -92,8 +92,6 @@ const Section4 = () => {
         translate = translate < 0 ? 0 : translate;
         scale = scale > 1 ? 1 : scale;
 
-        console.log(scale);
-
         setTransform(
           `translate3d(0px, ${translate}%, 0px) scale3d(${scale},${scale}, 1) rotateX(0deg) rotateY(0deg) rotateZ(${translate}deg) skew(0deg, 0deg)`
         );

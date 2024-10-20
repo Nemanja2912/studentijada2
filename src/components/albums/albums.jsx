@@ -1,63 +1,102 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import styles from "./albums.module.css";
 
 const list = [
   {
-    date: "10. decembar 2022. Beograd",
-    image: "./assets/images/section2_1.jpg",
-    link: "https://drive.google.com/drive/folders/102dMB_4mC7Dh8LXMa0zDTGZsbnKqKjxk?usp=drive_link",
+    date: "23. mart 2024.",
+    image: "./assets/images/albums_9.jpg",
+    link: "https://drive.google.com/drive/folders/1ufmXpo1LlsieLdStER4juVPhpHdbpiPJ?usp=sharing",
   },
   {
-    date: "10. mart 2023. Beograd",
-    image: "./assets/images/section2_2.jpg",
-    link: "https://drive.google.com/drive/folders/116uBPfPHE-xlfmPHi9KVEiIQQlkkQYX0?usp=drive_link",
-  },
-  {
-    date: "11. mart 2023. Beograd",
-    image: "./assets/images/section2_3.jpg",
-    link: "https://drive.google.com/drive/folders/1-0gHjWgqc7GiNBBkapIP43rVra_SCz_h?usp=drive_link",
-  },
-  {
-    date: "1. april 2023. Novi Sad",
-    image: "./assets/images/section2_4.jpg",
-    link: "https://drive.google.com/drive/folders/1-wO4VnZtiILHD3pgGteoE1lFdXo9RY6e?usp=sharing",
-  },
-  {
-    date: "9. septembar 2023. Beograd",
-    image: "./assets/images/section2_5.jpg",
-    link: "https://drive.google.com/drive/folders/1nge96sCj234Xz7ZZThtmKa0ICwS75nNp?usp=sharing",
-  },
-  {
-    date: "18. novembar 2023. Novi Sad",
-    image: "./assets/images/section2_6.jpg",
-    link: "https://drive.google.com/drive/folders/1YgZlowvFd_JBUFtsaG5LBOnW7fSG1wkv?usp=sharing",
-  },
-  {
-    date: "16. decembar 2023. Beograd",
-    image: "./assets/images/section2_7.jpg",
-    link: "https://drive.google.com/drive/folders/1IPXQ21i3liPVMdoJa0aHevv_TgU5QDw6?usp=sharing",
-  },
-  {
-    date: "16. mart 2024. Novi Sad",
-    image: "./assets/images/section2_8.jpg",
+    date: "16. mart 2024.",
+    image: "./assets/images/albums_8.jpg",
     link: "https://drive.google.com/drive/folders/13a5gk5-yGb-qrNC7GmrEGDwF_BPiU7Gj?usp=sharing",
   },
   {
-    date: "23. mart 2024. Beograd",
-    image: "./assets/images/section2_9.jpg",
-    link: "https://drive.google.com/drive/folders/1ufmXpo1LlsieLdStER4juVPhpHdbpiPJ?usp=sharing",
+    date: "16. decembar 2023.",
+    image: "./assets/images/albums_7.jpg",
+    link: "https://drive.google.com/drive/folders/1IPXQ21i3liPVMdoJa0aHevv_TgU5QDw6?usp=sharing",
+  },
+  {
+    date: "18. novembar 2023.",
+    image: "./assets/images/albums_6.jpg",
+    link: "https://drive.google.com/drive/folders/1YgZlowvFd_JBUFtsaG5LBOnW7fSG1wkv?usp=sharing",
+  },
+  {
+    date: "9. septembar 2023.",
+    image: "./assets/images/albums_5.jpg",
+    link: "https://drive.google.com/drive/folders/1nge96sCj234Xz7ZZThtmKa0ICwS75nNp?usp=sharing",
+  },
+  {
+    date: "1. april 2023.",
+    image: "./assets/images/albums_4.jpg",
+    link: "https://drive.google.com/drive/folders/1-wO4VnZtiILHD3pgGteoE1lFdXo9RY6e?usp=sharing",
+  },
+  {
+    date: "11. mart 2023.",
+    image: "./assets/images/albums_3.jpg",
+    link: "https://drive.google.com/drive/folders/1-0gHjWgqc7GiNBBkapIP43rVra_SCz_h?usp=drive_link",
+  },
+  {
+    date: "10. mart 2023.",
+    image: "./assets/images/albums_2.jpg",
+    link: "https://drive.google.com/drive/folders/116uBPfPHE-xlfmPHi9KVEiIQQlkkQYX0?usp=drive_link",
+  },
+  {
+    date: "10. decembar 2022.",
+    image: "./assets/images/albums_1.jpg",
+    link: "https://drive.google.com/drive/folders/102dMB_4mC7Dh8LXMa0zDTGZsbnKqKjxk?usp=drive_link",
   },
 ];
 
 const Albums = () => {
+  const wrapperRefs = useRef([]);
+
+  const gridRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      wrapperRefs.current.forEach((ref, index) => {
+        if (ref) {
+          // if (index === 0)
+          //   console.log(window.innerHeight * 0.9 - ref.getBoundingClientRect().bottom);
+        }
+      });
+
+      console.log(gridRef.current.getBoundingClientRect().top);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div className={styles.section}>
       <h2>Albumi</h2>
 
       <div className="container">
-        <div className={styles.grid}>
+        <div className={styles.grid} ref={gridRef}>
           {list.map((item, index) => (
-            <div key={index} className={styles.imageWrapper}>
+            <div
+              style={{
+                zIndex: list.length - index,
+                // transform: `scale(${1 - 0.05 * index}) translateY(${5 * index}%)`,
+              }}
+              key={index}
+              className={styles.imageWrapper}
+              ref={(el) => (wrapperRefs.current[index] = el)}
+            >
               <img src={item.image} alt="" />
+
+              <div className={styles.background}></div>
+              <div className={styles.date}>
+                <h3>{item.date}</h3>
+              </div>
             </div>
           ))}
         </div>
