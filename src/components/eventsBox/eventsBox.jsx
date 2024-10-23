@@ -28,7 +28,7 @@ const EventsBox = () => {
               <span>{event.location.split(" - ")[0]}</span> - {event.location.split(" - ")[1]}
             </div>
             <div className={styles.itemDate}>{formatDate(event.date)}</div>
-            <Button link={event.link ? events.link : defaultLink}>Kupi kartu</Button>
+            <Button link={event.link ? event.link : defaultLink}>Kupi kartu</Button>
           </div>
         ))}
       </div>
