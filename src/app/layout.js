@@ -1,29 +1,26 @@
-"use client";
-
 import localFont from "next/font/local";
 import "./globals.css";
 import Navigation from "@/components/navigation/navigation";
-import { useEffect } from "react";
 
 const humane = localFont({
   src: [
     {
-      path: "./fonts/Humane-Light.ttf",
+      path: "./fonts/Humane-Light.otf",
       weight: "300",
       style: "normal",
     },
     {
-      path: "./fonts/Humane-Regular.ttf",
+      path: "./fonts/Humane-Regular.otf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/Humane-Medium.ttf",
+      path: "./fonts/Humane-Medium.otf",
       weight: "500",
       style: "normal",
     },
     {
-      path: "./fonts/Humane-Bold.ttf",
+      path: "./fonts/Humane-Bold.otf",
       weight: "700",
       style: "normal",
     },
@@ -58,26 +55,6 @@ const satoshi = localFont({
 });
 
 export default function RootLayout({ children }) {
-  useEffect(() => {
-    const handleLoad = () => {
-      const fadeUpElements = document.querySelectorAll(".showOnLoad.showFadeUp");
-      fadeUpElements.forEach((element) => {
-        element.classList.add("fadeUp");
-      });
-
-      const fadeLeftElements = document.querySelectorAll(".showOnLoad.showFadeLeft");
-      fadeLeftElements.forEach((element) => {
-        element.classList.add("fadeLeft");
-      });
-    };
-
-    window.addEventListener("load", handleLoad);
-
-    return () => {
-      window.removeEventListener("load", handleLoad);
-    };
-  }, []);
-
   return (
     <html lang="en">
       <body className={`${humane.variable} ${satoshi.variable}`}>

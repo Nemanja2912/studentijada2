@@ -1,8 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import styles from "./gallery.module.css";
+import events from "@/events/events";
 
 let counterTimeout;
+
+let changeRegionTimeout = null;
 
 const imagesByRow = {
   firstRow: [
@@ -71,48 +74,44 @@ const Gallery = () => {
       middleRow.current.style.transform = `translateY(${calculatedMove}%)`;
 
       contentRef.current.style.transform = `translate3d(0px, ${contentTranslate}%, 0px) rotateX(-${contentRotate}deg) scale(${contentScale}, ${contentScale})`;
+
+      if (top - window.innerHeight * 0.3 < 0) {
+        if (!changeRegionTimeout)
+          changeRegionTimeout = setInterval(() => {
+            setBoxSwitch((prev) => (prev === 0 ? 1 : 0));
+          }, 5000);
+      } else {
+        clearInterval(changeRegionTimeout);
+        changeRegionTimeout = null;
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      clearInterval(changeRegionTimeout);
     };
   }, [sectionRef]);
 
   return (
-    <div className={`${styles.section} gallery`} ref={sectionRef}>
+    <section className={`${styles.section} gallery`} ref={sectionRef}>
       <div className={`${styles.wrapper} `} ref={gridRef}>
         <div className={styles.background}>
           <div className={styles.counterBoxWrapper} ref={contentRef}>
-            <div
-              style={{
-                transform: boxSwitch === 0 ? "rotateY(0deg)" : "rotateY(90deg)",
-                transition: "0.25s ease-in-out",
-                transitionDelay: boxSwitch === 0 ? "0.25s" : "0s",
-              }}
-            >
-              <CounterBox
-                eventTime="2024-11-16T21:00:00"
-                handleChange={setBoxSwitch}
-                label="Novom Sadu"
-              />
-            </div>
-
-            <div
-              className={styles.otherSide}
-              style={{
-                transform: boxSwitch === 1 ? "rotateY(0deg)" : "rotateY(90deg)",
-                transition: "0.25s ease-in-out",
-                transitionDelay: boxSwitch === 1 ? "0.25s" : "0s",
-              }}
-            >
-              <CounterBox
-                eventTime="2024-12-21T21:00:00"
-                handleChange={setBoxSwitch}
-                label="Beogradu"
-              />
-            </div>
+            {events.map((event, index) => (
+              <div
+                className={index === 1 ? styles.otherSide : ""}
+                key={index}
+                style={{
+                  transform: boxSwitch === index ? "rotateY(0deg)" : "rotateY(90deg)",
+                  transition: "0.25s ease-in-out",
+                  transitionDelay: boxSwitch === index ? "0.25s" : "0s",
+                }}
+              >
+                <CounterBox eventTime={event.date} onChange={setBoxSwitch} label={event.label} />
+              </div>
+            ))}
           </div>
         </div>
 
@@ -143,14 +142,29 @@ const Gallery = () => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
 export default Gallery;
 
-const CounterBox = ({ eventTime, handleChange, label }) => {
+const CounterBox = ({ eventTime, onChange, label }) => {
   const [time, setTime] = useState({});
+
+  const handleChange = () => {
+    const changeEvent = (prev) => (prev === 0 ? 1 : 0);
+
+    onChange(changeEvent);
+
+    clearInterval(changeRegionTimeout);
+    changeRegionTimeout = null;
+
+    setTimeout(() => {
+      changeRegionTimeout = setInterval(() => {
+        onChange(changeEvent);
+      }, 5000);
+    }, 0);
+  };
 
   useEffect(() => {
     const getTime = () => {
@@ -277,7 +291,7 @@ const CounterBox = ({ eventTime, handleChange, label }) => {
         </div>
       </div>
 
-      <div className={styles.btn} onClick={() => handleChange((prev) => (prev === 0 ? 1 : 0))}>
+      <div className={styles.btn} onClick={handleChange}>
         {label === "Beogradu" ? icons.ns : icons.bg}
       </div>
     </>
@@ -286,7 +300,7 @@ const CounterBox = ({ eventTime, handleChange, label }) => {
 
 const icons = {
   bg: (
-    <svg width="87" height="37" viewBox="0 0 87 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 87 37" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M3.18 2.13998C4 1.19998 4.88 0.72998 5.82 0.72998C6.76 0.72998 7.32 1.44998 7.5 2.88998V2.97998C7.5 3.69998 7.09 5.26998 6.27 7.68998L7.68 7.38998C9.4 7.38998 10.4 8.48998 10.68 10.69V11.14C10.68 13.78 9.02 16.19 5.7 18.37C4.62 18.79 3.84 19 3.36 19C1.74 19 0.62 18.06 0 16.18C0.04 15.96 0.29 15.65 0.75 15.25C0.97 6.20998 1.16 1.68998 1.32 1.68998C1.66 1.34998 1.97 1.17998 2.25 1.17998C2.79 1.37998 3.06 1.69998 3.06 2.13998H3.18ZM2.88 10.39H3C4.64 7.28998 5.51 4.88998 5.61 3.18998V2.49998H5.31C4.89 2.49998 4.33 3.62998 3.63 5.88998C3.13 8.02998 2.88 9.52998 2.88 10.39ZM4.02 12.25L3.57 12.43L2.82 12.37V12.43L2.7 12.82V15.94L2.61 17.05L3.27 17.23C4.97 17.23 6.65 15.95 8.31 13.39C8.77 12.25 9 11.31 9 10.57C9 9.64998 8.56 9.18998 7.68 9.18998H7.56C6.6 9.18998 5.42 10.21 4.02 12.25Z"
         fill="#C3FF0B"
@@ -322,7 +336,7 @@ const icons = {
     </svg>
   ),
   ns: (
-    <svg width="92" height="39" viewBox="0 0 92 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 92 39" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M3.60586 1.44C4.54586 1.74 6.33586 5.39 8.97586 12.39L9.42586 12.93V11.25C9.42586 6.79 10.5259 3.64 12.7259 1.8C13.2259 1.8 13.5359 2.14 13.6559 2.82C12.1559 5.06 11.4059 6.87 11.4059 8.25C11.3059 8.25 11.2459 8.88 11.2259 10.14V11.73C11.2259 13.11 11.3759 15.08 11.6759 17.64C11.4959 18.14 11.1759 18.39 10.7159 18.39C10.2559 18.39 9.60586 17.45 8.76586 15.57C7.74586 13.95 6.62586 11.49 5.40586 8.19H5.28586V8.37L5.46586 12.18C5.46586 16.12 4.71586 18.66 3.21586 19.8L2.46586 19.89C1.84586 19.89 1.32586 19.32 0.905859 18.18C1.04586 17.56 1.35586 17.25 1.83586 17.25H2.01586L2.58586 17.73H2.67586C3.37586 16.79 3.72586 15.01 3.72586 12.39C3.72586 9.75 3.34586 6.41 2.58586 2.37C2.58586 1.83 2.92586 1.52 3.60586 1.44ZM19.0751 6.69C20.5551 6.69 21.6751 7.79 22.4351 9.99L22.5551 10.62C22.5551 12.76 21.5551 14.95 19.5551 17.19C18.7551 17.93 17.9451 18.3 17.1251 18.3C15.9251 18.3 15.0751 17.61 14.5751 16.23C14.3951 15.59 14.3051 15.03 14.3051 14.55V14.19C14.3051 11.03 15.4551 8.63 17.7551 6.99C18.1551 6.79 18.5951 6.69 19.0751 6.69ZM16.0751 14.49C16.0751 15.85 16.4251 16.53 17.1251 16.53C18.5851 16.53 19.7951 14.66 20.7551 10.92V10.35C20.4151 9.11 19.7851 8.49 18.8651 8.49C18.5051 8.49 18.3251 8.74 18.3251 9.24C18.3251 9.58 17.9251 9.85 17.1251 10.05C16.4251 11.23 16.0751 12.71 16.0751 14.49ZM24.3345 7.89C24.7945 7.89 25.2945 8.99 25.8345 11.19C26.5945 12.95 27.0245 13.88 27.1245 13.98C27.2245 13.98 27.5945 12.98 28.2345 10.98C28.8745 8.98 29.4845 7.98 30.0645 7.98C30.6045 8.18 30.8745 8.5 30.8745 8.94C29.2145 13.22 28.3845 16.05 28.3845 17.43L27.8145 18H27.2445C26.5245 17.48 25.3045 14.73 23.5845 9.75L23.3145 8.64C23.4545 8.14 23.7945 7.89 24.3345 7.89ZM32.5062 2.37C33.2662 2.53 33.6462 2.87 33.6462 3.39C33.4462 3.95 33.1262 4.23 32.6862 4.23C31.9462 4.09 31.5762 3.72 31.5762 3.12C31.7762 2.62 32.0862 2.37 32.5062 2.37ZM33.6462 6.57C33.9662 6.57 34.2362 6.86 34.4562 7.44L34.1862 9.57V10.98C34.1862 12.62 34.4662 14.77 35.0262 17.43C34.8262 17.81 34.4862 18 34.0062 18C33.1862 18 32.6462 15.6 32.3862 10.8V9.75C32.3862 7.63 32.8062 6.57 33.6462 6.57Z"
         fill="#C3FF0B"

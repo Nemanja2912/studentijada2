@@ -12,6 +12,8 @@ const Hero = () => {
 
   useEffect(() => {
     const handleScroll = () => {
+      if (window.innerWidth < 600) return;
+
       const currentOpacity = 0.8;
 
       const { bottom, height } = sectionRef.current.getBoundingClientRect();

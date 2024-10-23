@@ -2,7 +2,7 @@
   background-color: var(--black-color);
   position: relative;
   z-index: 10;
-
+  padding-top: 20rem;
   padding-bottom: 10rem;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .line {
-  padding: 0 5.2rem;
+  padding: 0 7.5rem;
 
   display: flex;
   align-items: center;
@@ -43,8 +43,34 @@
   transform: translateX(-100%);
 }
 
-@media (max-width: 650px) {
+@media (max-width: 900px) {
+  .section {
+    padding-top: 20rem;
+    padding-bottom: 10rem;
+  }
+
+  .logos:nth-child(2) {
+    transform: rotate(-5deg) translate(10%, -4rem) scale(1.2);
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding-top: 15rem;
+    padding-bottom: 10rem;
+  }
+
+  .logos:nth-child(2) {
+    transform: rotate(-5deg) translate(10%, -3rem) scale(1.2);
+  }
+
+  .logos img {
+    height: 5rem;
+  }
+
   .line {
+    padding: 0 3.75rem;
+
     gap: 7.5rem;
   }
 }

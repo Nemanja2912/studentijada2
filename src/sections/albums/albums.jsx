@@ -52,44 +52,21 @@ const list = [
 ];
 
 const Albums = () => {
-  const wrapperRefs = useRef([]);
-
-  const gridRef = useRef(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      wrapperRefs.current.forEach((ref, index) => {
-        if (ref) {
-          // if (index === 0)
-          //   console.log(window.innerHeight * 0.9 - ref.getBoundingClientRect().bottom);
-        }
-      });
-
-      console.log(gridRef.current.getBoundingClientRect().top);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
-    <div className={styles.section}>
-      <h2>Albumi</h2>
+    <div id="albumi" className={styles.section}>
+      <h2>Prethodne žurke</h2>
 
       <div className="container">
-        <div className={styles.grid} ref={gridRef}>
+        <div className={styles.grid}>
           {list.map((item, index) => (
-            <div
+            <a
+              href={item.link}
+              target="_blank"
               style={{
                 zIndex: list.length - index,
-                // transform: `scale(${1 - 0.05 * index}) translateY(${5 * index}%)`,
               }}
               key={index}
               className={styles.imageWrapper}
-              ref={(el) => (wrapperRefs.current[index] = el)}
             >
               <img src={item.image} alt="" />
 
@@ -97,7 +74,7 @@ const Albums = () => {
               <div className={styles.date}>
                 <h3>{item.date}</h3>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>

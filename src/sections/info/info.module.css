@@ -78,3 +78,63 @@
 
   transition: 0.25s ease-in-out;
 }
+
+@media (max-width: 900px) {
+  .section {
+    padding-top: 20rem;
+    padding-bottom: 20rem;
+  }
+
+  .section > div {
+    gap: 2rem;
+    /* grid-template-columns: 1fr; */
+  }
+
+  .section h2 {
+    font-size: 15rem;
+  }
+
+  .description {
+    width: 55rem;
+  }
+
+  .imageWrapper {
+    height: 30rem;
+  }
+
+  .imageBox {
+    height: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding-top: 15rem;
+    padding-bottom: 15rem;
+  }
+
+  .section > div {
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .firstLine {
+    flex-direction: column;
+  }
+
+  .section h2 {
+    font-size: 9rem;
+  }
+
+  .description {
+    width: 100%;
+  }
+
+  .imageWrapper {
+    height: 30rem;
+  }
+
+  .imageBox {
+    height: 100%;
+  }
+}

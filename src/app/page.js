@@ -1,23 +1,22 @@
-import Albums from "@/components/albums/albums";
-import Logos from "@/components/logos/logos";
-import Gallery from "@/sections/gallery/gallery";
-import Hero from "@/sections/hero/hero";
-import Info from "@/sections/info/info";
-import Section4 from "@/sections/section4/section4";
+import HomeWrapper from "@/components/homeWrapper/homeWrapper";
+import Head from "next/head";
 
 export default function Home() {
   return (
-    <div>
-      <Hero />
+    <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+      </Head>
 
-      <Info />
-      <Gallery />
-
-      <Section4 />
-
-      <Logos />
-
-      <Albums />
-    </div>
+      <HomeWrapper />
+    </>
   );
 }
+
+export const metadata = {
+  title: "Studentijada - Najveća studentska žurka",
+  description: "...",
+};

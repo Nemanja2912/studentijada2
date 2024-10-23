@@ -28,7 +28,6 @@
 }
 
 .navigation ul li {
-  list-style-type: none;
   font-size: 1.6rem;
   font-weight: 500;
   cursor: pointer;
@@ -45,4 +44,24 @@
   transform: translate(-15%, -49%);
   width: 140%;
   z-index: -1;
+}
+
+@media (max-width: 900px) {
+  .navigation ul a {
+    display: none;
+  }
+
+  .navigation ul a:last-child {
+    display: initial;
+  }
+
+  .navigation p {
+    font-size: 4.5rem;
+  }
+
+  .navigation ul li {
+    font-size: 1.8rem;
+
+    transform: translateY(-0.5rem);
+  }
 }

@@ -3,7 +3,7 @@
   z-index: 10;
   background-color: var(--black-color);
 
-  padding: 20rem 0;
+  padding: 12rem 0 20rem 0;
 }
 
 .grid {
@@ -12,7 +12,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 2rem;
 }
 
@@ -30,7 +29,7 @@
 }
 
 .background {
-  background-color: rgba(7, 8, 7, 0.4);
+  background-color: rgba(8, 7, 8, 0.4);
   position: absolute;
 
   top: 0;
@@ -42,6 +41,7 @@
 .imageWrapper img {
   width: 100%;
   height: 100%;
+  border-radius: 1rem;
   top: 0;
   left: 0;
   right: 0;
@@ -71,4 +71,32 @@
   font-family: var(--font-humane);
   font-weight: 300;
   font-size: 10rem;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding: 10rem 0 15rem 0;
+  }
+
+  .grid {
+    margin-top: 5rem;
+    gap: 2rem;
+  }
+
+  .imageWrapper {
+    bottom: 10vh;
+    width: 100%;
+    height: 50rem;
+  }
+
+  .section h2 {
+    font-size: 9rem;
+  }
+
+  .date h3 {
+    font-family: var(--font-humane);
+    font-weight: 300;
+    font-size: 7rem;
+  }
 }

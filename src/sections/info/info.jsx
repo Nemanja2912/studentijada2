@@ -17,12 +17,14 @@ const Info = () => {
 
       const percentage = ((window.innerHeight - top) / height) * 100;
 
-      if (percentage < 0) {
-        imageRef.current.style.transform = `translateY(-50%)`;
-      } else if (percentage > 170) {
-        imageRef.current.style.transform = `translateY(120%)`;
-      } else {
-        imageRef.current.style.transform = `translateY(${-50 + percentage}%)`;
+      if (window.innerWidth >= 600) {
+        if (percentage < 0) {
+          imageRef.current.style.transform = `translateY(-50%)`;
+        } else if (percentage > 170) {
+          imageRef.current.style.transform = `translateY(120%)`;
+        } else {
+          imageRef.current.style.transform = `translateY(${-50 + percentage}%)`;
+        }
       }
 
       if (percentage >= 0 && percentage < 40) {
@@ -36,12 +38,6 @@ const Info = () => {
       } else if (percentage >= 110) {
         setImageSrc(4);
       }
-
-      if (top < 0) {
-        gallerySection.style.zIndex = 5;
-      } else {
-        gallerySection.style.zIndex = 1;
-      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -52,7 +48,7 @@ const Info = () => {
   }, [sectionRef, imageRef]);
 
   return (
-    <section className={styles.section} ref={sectionRef}>
+    <section className={styles.section} ref={sectionRef} id="o-nama">
       <div className="container">
         <div className={styles.textWrapper}>
           <div className={styles.firstLine}>

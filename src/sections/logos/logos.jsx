@@ -35,7 +35,7 @@ const Logos = () => {
   }, []);
 
   return (
-    <div className={`${styles.section}`}>
+    <section id="sponzori" className={`${styles.section}`}>
       <div className={styles.wrapper}>
         <div className={styles.logos}>
           <div className={styles.line} ref={line1}>
@@ -63,7 +63,7 @@ const Logos = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
