@@ -3,7 +3,7 @@
   position: relative;
   z-index: 10;
   background-color: var(--black-color);
-  margin-bottom: 2rem;
+  padding-bottom: 2rem;
 }
 
 .section > div {
@@ -74,7 +74,7 @@
 
 @media (max-width: 900px) {
   .section {
-    margin-bottom: 2rem;
+    padding-bottom: 2rem;
   }
 
   .section > div {
@@ -110,5 +110,9 @@
 
   .socials {
     gap: 5rem;
+  }
+
+  .media {
+    gap: 2rem;
   }
 }

@@ -151,54 +151,20 @@ export default Gallery;
 const CounterBox = ({ eventTime, onChange, label }) => {
   const [time, setTime] = useState({});
 
-  const handleChange = () => {
-    const changeEvent = (prev) => (prev === 0 ? 1 : 0);
-
-    onChange(changeEvent);
-
-    clearInterval(changeRegionTimeout);
-    changeRegionTimeout = null;
-
-    setTimeout(() => {
-      changeRegionTimeout = setInterval(() => {
-        onChange(changeEvent);
-      }, 5000);
-    }, 0);
-  };
-
   useEffect(() => {
-    const getTime = () => {
-      const date_future = new Date(eventTime);
-      const date_now = new Date();
+    const updateTime = () => {
+      // Postavi vremensku zonu na 'Europe/Belgrade' za oba datuma
+      const now = new Date().toLocaleString("en-US", { timeZone: "Europe/Belgrade" });
+      const eventDate = new Date(
+        new Date(eventTime).toLocaleString("en-US", { timeZone: "Europe/Belgrade" })
+      );
 
-      // get total seconds between the times
-      let delta = Math.abs(date_future - date_now) / 1000;
+      const delta = Math.max(0, (new Date(eventDate) - new Date(now)) / 1000); // Sprečava negativne vrednosti
 
-      if (date_future < date_now) {
-        // If the event date has passed, set all values to 0
-        setTime({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-        });
-        return; // Stop further updates
-      }
-
-      // calculate (and subtract) whole days
-      let days = Math.floor(delta / 86400);
-      delta -= days * 86400;
-
-      // calculate (and subtract) whole hours
-      let hours = Math.floor(delta / 3600) % 24;
-      delta -= hours * 3600;
-
-      // calculate (and subtract) whole minutes
-      let minutes = Math.floor(delta / 60) % 60;
-      delta -= minutes * 60;
-
-      // calculate whole seconds
-      let seconds = Math.floor(delta % 60);
+      const days = Math.floor(delta / 86400);
+      const hours = Math.floor((delta % 86400) / 3600);
+      const minutes = Math.floor((delta % 3600) / 60);
+      const seconds = Math.floor(delta % 60);
 
       setTime({
         days,
@@ -206,92 +172,61 @@ const CounterBox = ({ eventTime, onChange, label }) => {
         minutes,
         seconds,
       });
-
-      // Continue updating every second
-      counterTimeout = setTimeout(getTime, 1000);
     };
 
-    getTime();
+    const intervalId = setInterval(updateTime, 1000);
 
-    return () => clearTimeout(counterTimeout);
-  }, []);
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, [eventTime]);
 
   const getLabel = (value, type) => {
     if (type === "days") {
-      if (value % 10 === 1 && value !== 11) {
-        return "dan";
-      } else {
-        return "dana";
-      }
+      return value === 1 ? "dan" : "dana";
     } else if (type === "hours") {
-      if (value === 1 || value === 21) {
-        return "sat";
-      } else if ((value > 1 && value < 5) || (value > 21 && value < 25)) {
-        return "sata";
-      } else {
-        return "sati";
-      }
+      if (value === 1 || value === 21) return "sat";
+      if ((value >= 2 && value <= 4) || value >= 22) return "sata";
+      return "sati";
     } else if (type === "minutes") {
-      if (value === 1 || value === 21 || value === 31 || value === 41 || value === 51) {
-        return "minut";
-      } else if (
-        (value > 1 && value < 5) ||
-        (value > 21 && value < 25) ||
-        (value > 31 && value < 35) ||
-        (value > 41 && value < 45) ||
-        (value > 51 && value < 55)
-      ) {
-        return "minute";
-      } else {
-        return "minuta";
-      }
+      return [1, 21, 31, 41, 51].includes(value)
+        ? "minut"
+        : value % 10 >= 2 && value % 10 <= 4
+        ? "minute"
+        : "minuta";
     } else if (type === "seconds") {
-      if (value === 1 || value === 21 || value === 31 || value === 41 || value === 51) {
-        return "sekund";
-      } else if (
-        (value > 1 && value < 5) ||
-        (value > 21 && value < 25) ||
-        (value > 31 && value < 35) ||
-        (value > 41 && value < 45) ||
-        (value > 51 && value < 55)
-      ) {
-        return "sekunde";
-      } else {
-        return "sekundi";
-      }
+      return [1, 21, 31, 41, 51].includes(value)
+        ? "sekund"
+        : value % 10 >= 2 && value % 10 <= 4
+        ? "sekunde"
+        : "sekundi";
     }
   };
 
   return (
     <>
-      <div
-        className={styles.counterBox}
-        style={{ transform: "rotateY(0deg)", transition: "3.25s ease-in-out" }}
-      >
+      <div className={styles.counterBox}>
         <p className={styles.counterBoxTitle}>
           Žurka u <span>{label}</span> počinje za:
         </p>
         <div className={styles.counter}>
           <div className={styles.counterItem}>
-            <div>{time.days >= 10 ? time.days : "0" + time.days}</div>
+            <div>{time.days?.toString().padStart(2, "0")}</div>
             <div className={styles.label}>{getLabel(time.days, "days")}</div>
           </div>
           <div className={styles.counterItem}>
-            <div>{time.hours >= 10 ? time.hours : "0" + time.hours}</div>
+            <div>{time.hours?.toString().padStart(2, "0")}</div>
             <div className={styles.label}>{getLabel(time.hours, "hours")}</div>
           </div>
           <div className={styles.counterItem}>
-            <div>{time.minutes >= 10 ? time.minutes : "0" + time.minutes}</div>
+            <div>{time.minutes?.toString().padStart(2, "0")}</div>
             <div className={styles.label}>{getLabel(time.minutes, "minutes")}</div>
           </div>
           <div className={styles.counterItem}>
-            <div>{time.seconds >= 10 ? time.seconds : "0" + time.seconds}</div>
+            <div>{time.seconds?.toString().padStart(2, "0")}</div>
             <div className={styles.label}>{getLabel(time.seconds, "seconds")}</div>
           </div>
         </div>
       </div>
-
-      <div className={styles.btn} onClick={handleChange}>
+      <div className={styles.btn} onClick={onChange}>
         {label === "Beogradu" ? icons.ns : icons.bg}
       </div>
     </>
